@@ -43,6 +43,9 @@ const tooltip = d3
 let data = [];
 let region;
 let circles, xUnit, yUnit, legendRects, legendTexts;
+let asiaSelected = false; //아시아라는 버튼이 아직 선택되지 않음
+let chinaSelected = false;
+let usSelected = false;
 
 // data
 
@@ -89,22 +92,22 @@ d3.csv("data/gapminder_combined.csv").then((raw_data) => {
     .attr("cy", (d) => yScale(d.life_expectancy))
     .attr("r", (d) => radiusScale(d.population))
     .attr("fill", (d) => colorScale(d.region))
-    .attr("stroke", "whitesmoke")
-    .on("mousemove", function (event, d, index) {
-      tooltip //mousemove는 툴팁이 따라와서 mouseover보다 더 자연스러움
-        .style("left", event.pageX + "px")
-        .style("top", event.pageY - 52 + "px")
-        .style("display", "block")
-        .html(
-          `<div>Country: ${d.country}, <span class="test">Life Expectancy: ${d.life_expectancy}</span></div>`
-        );
+    .attr("stroke", "whitesmoke");
+  // .on("mousemove", function (event, d, index) {
+  //   tooltip //mousemove는 툴팁이 따라와서 mouseover보다 더 자연스러움
+  //     .style("left", event.pageX + "px")
+  //     .style("top", event.pageY - 52 + "px")
+  //     .style("display", "block")
+  //     .html(
+  //       `<div>Country: ${d.country}, <span class="test">Life Expectancy: ${d.life_expectancy}</span></div>`
+  //     );
 
-      d3.select(this).style("stroke-width", 2).attr("stroke", "#333");
-    })
-    .on("mouseout", function () {
-      tooltip.style("display", "none");
-      d3.select(this).style("stroke-width", 1).attr("stroke", "#fff");
-    });
+  //   d3.select(this).style("stroke-width", 2).attr("stroke", "#333");
+  // })
+  // .on("mouseout", function () {
+  //   tooltip.style("display", "none");
+  //   d3.select(this).style("stroke-width", 1).attr("stroke", "#fff");
+  // });
 
   // Units
   xUnit = svg
@@ -143,6 +146,74 @@ d3.csv("data/gapminder_combined.csv").then((raw_data) => {
     .text((d) => d)
     .attr("fill", "#666")
     .attr("class", "legend-texts");
+
+  // Button //
+
+  //1.asia//
+  d3.select("#button-asia").on("click", () => {
+    asiaSelected = !asiaSelected;
+    chinaSelected = false;
+    usSelected = false;
+    // console.log(asiaSelected);
+
+    d3.select("#text-desc").text("asia Selected");
+
+    d3.select("#button-asia").classed("button-clicked", asiaSelected);
+    d3.select("#button-china").classed("button-clicked", false);
+    d3.select("#button-us").classed("button-clicked", false);
+
+    circles.attr("fill", (d) => {
+      if (asiaSelected) {
+        return d.region == "asia" ? colorScale(d.region) : "rgba(0,0,0,0.1)";
+      } else {
+        return colorScale(d.region);
+      }
+    });
+  });
+
+  //2.china//
+  d3.select("#button-china").on("click", () => {
+    chinaSelected = !chinaSelected;
+    asiaSelected = false;
+    usSelected = false;
+
+    d3.select("#text-desc").text("china Selected");
+
+    d3.select("#button-china").classed("button-clicked", chinaSelected);
+    d3.select("#button-asia").classed("button-clicked", false);
+    d3.select("#button-us").classed("button-clicked", false);
+
+    circles.attr("fill", (d) => {
+      if (chinaSelected) {
+        return d.country == "China" ? colorScale(d.region) : "rgba(0,0,0,0.1)";
+      } else {
+        return colorScale(d.region);
+      }
+    });
+  });
+
+  //3.us//
+  d3.select("#button-us").on("click", () => {
+    usSelected = !usSelected;
+    asiaSelected = false;
+    chinaSelected = false;
+
+    d3.select("#text-desc").text("us Selected");
+
+    d3.select("#button-us").classed("button-clicked", usSelected);
+    d3.select("#button-asia").classed("button-clicked", false);
+    d3.select("#button-china").classed("button-clicked", false);
+
+    circles.attr("fill", (d) => {
+      if (usSelected) {
+        return d.country == "United States"
+          ? colorScale(d.region)
+          : "rgba(0,0,0,0.1)";
+      } else {
+        return colorScale(d.region);
+      }
+    });
+  });
 });
 
 ////RESIZE////
