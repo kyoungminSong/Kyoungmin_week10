@@ -11,7 +11,7 @@
 }
 
 h1 {
-  font-size: 50px;
+  font-size: 35px;
   width: 98%;
   max-width: 900px;
 
@@ -21,8 +21,8 @@ h1 {
   text-align: center;
   /* border-top: 1px solid #333;
   border-bottom: 1px solid #333; */
-  margin-top: 50px;
-  margin-bottom: 30px;
+  margin-top: 30px;
+  margin-bottom: 10px;
   font-weight: 550;
   text-transform: uppercase;
   font-style: italic;
@@ -35,7 +35,14 @@ h1 span {
   font-style: normal;
   text-transform: lowercase;
   font-weight: 400;
-  font-size: 45px;
+  font-size: 20px;
+}
+
+#source {
+  font-size: 10px;
+  color: gray;
+  text-align: right;
+  /* border: 1px solid red; */
 }
 
 /* @media (max-width: 800px) {
